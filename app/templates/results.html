@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>TaxCal</title>
+  </head>
+
+  <body class="bg-gray-100 font-roboto">
+    <nav class="mb-5 bg-blue-500 p-4 shadow-md">
+      <div
+        class="container mx-auto flex flex-wrap items-center justify-between gap-4"
+      >
+        <a href="/" class="text-xl font-bold text-white">TaxCal</a>
+        <div class="flex items-center gap-4">
+          <a href="/" class="text-white hover:text-gray-200">Calculate</a>
+          <a href="/compare" class="text-white hover:text-gray-200">Compare</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto">
+      <div
+        class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden"
+      >
+        <div class="p-6">
+          <h1 class="text-3xl font-semibold mb-4">Tax Calculation</h1>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+              <h2 class="text-xl font-semibold mb-2">Total Income</h2>
+              <p class="text-lg text-gray-700">{{ income }}</p>
+            </div>
+            <div class="mb-4">
+              <h2 class="text-xl font-semibold mb-2">Regime Opted</h2>
+              {% if regime == "old" %}
+              <p class="text-lg text-gray-700">Old Tax Regime</p>
+              {% else %}
+              <p class="text-lg text-gray-700">New Tax Regime</p>
+              {% endif %}
+            </div>
+            <div>
+              <h2 class="text-xl font-semibold mb-2">Total Tax Payable</h2>
+              <p class="text-lg text-gray-700">{{ tax }}</p>
+            </div>
+          </div>
+        </br>
+          <div class="bg-white p-6 rounded-lg shadow-md">
+            {% for message in messages %}
+            <div class="mb-4">
+              <p class="text-lg text-gray-700">{{ message }}</p>
+            </div>
+            {% endfor %}
+          </div>
+
+          <p class="mt-8 text-gray-600">
+            Note: The tax calculation displayed here is for reference only and
+            may not be accurate.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

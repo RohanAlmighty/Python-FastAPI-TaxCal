@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaxCal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-100">
+    <nav class="mb-5 bg-blue-500 p-4 shadow-md">
+      <div
+        class="container mx-auto flex flex-wrap items-center justify-between gap-4"
+      >
+        <a href="/" class="text-xl font-bold text-white">TaxCal</a>
+        <div class="flex items-center gap-4">
+          <a href="/" class="text-white hover:text-gray-200">Calculate</a>
+          <a href="/compare" class="text-white hover:text-gray-200">Compare</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto">
+      <div
+        class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden"
+      >
+        <div class="p-6">
+          <h5 class="text-2xl font-bold text-center mb-4">
+            Income Tax Calculator
+          </h5>
+          <p class="text-sm text-gray-600 mb-4">
+            Your annual income is {{ income }} and you have chosen {{ regime }}
+            tax regime
+          </p>
+          <form
+            method="post"
+            action="/calculate/"
+            class="space-y-4"
+            onsubmit="handleFormSubmit(event)"
+          >
+            <input
+              type="hidden"
+              id="income"
+              name="income"
+              value="{{ income }}"
+            />
+            <input
+              type="hidden"
+              id="regime"
+              name="regime"
+              value="{{ regime }}"
+            />
+
+            {% for deduction in deductions %}
+            <div class="flex flex-col space-y-1">
+              <label for="{{ deduction }}" class="stock-label"
+                >{{ deductions[deduction]['name'] }}:</label
+              >
+              {% if deductions[deduction]['limit'] != "na" %} {% if deduction ==
+              "standard" %}
+              <input
+                type="text"
+                class="border rounded-md py-2 px-3"
+                id="{{ deduction }}"
+                name="{{ deduction }}"
+                value="{{ deductions[deduction]['limit'] }}"
+                readonly
+              />
+              {% else %}
+              <input
+                type="text"
+                class="border rounded-md py-2 px-3"
+                id="{{ deduction }}"
+                name="{{ deduction }}"
+                placeholder="Enter deduction amount up to {{ deductions[deduction]['limit'] }}"
+              />
+              {% endif %} {% else %}
+              <input
+                type="text"
+                class="border rounded-md py-2 px-3"
+                id="{{ deduction }}"
+                name="{{ deduction }}"
+                placeholder="Enter deduction amount as per limits"
+              />
+              {% endif %}
+            </div>
+            {% endfor %}
+            <button
+              type="submit"
+              class="bg-blue-500 text-white rounded-md py-2 px-4 hover:bg-blue-600"
+            >
+              Calculate
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function handleFormSubmit(event) {
+        document.querySelector('input[name="income"]').value = "{{ income }}";
+        document.querySelector('input[name="regime"]').value = "{{ regime }}";
+        document
+          .querySelectorAll('input[type="text"]')
+          .forEach(function (input) {
+            if (input.value.trim() === "") {
+              input.value = "0";
+            }
+          });
+      }
+    </script>
+  </body>
+</html>
