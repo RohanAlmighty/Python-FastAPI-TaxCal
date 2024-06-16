@@ -2,11 +2,8 @@ from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 import copy
 
-from app.utils.utils import set_locale, inr, dict_inr, dict_clean
+from app.utils.utils import inr, dict_inr, dict_clean
 from app.services.tax_cal import deductions_dict, tax_handler, compare
-
-
-set_locale()
 
 app = FastAPI()
 
@@ -64,7 +61,10 @@ async def deductions(
             .replace(",", "")
             .replace(".00", "")
         )
-        if isinstance(income_clean, str) and not income_clean.isdigit():
+        if (
+            isinstance(income_clean, str)
+            and not income_clean.replace(".", "").isdigit()
+        ):
             return templates.TemplateResponse(
                 "error.html",
                 {
